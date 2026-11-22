@@ -139,8 +139,31 @@
                         class="text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">Showing All
                         Sets</span>
                 </div>
-                <div id="yearTabsContainer" class="flex flex-wrap items-center gap-2 pb-1.5">
-                    <!-- Populated dynamically via JS -->
+                <div class="relative">
+                    <button id="setMenuToggle" type="button" aria-expanded="false" aria-controls="yearTabsContainer"
+                        class="w-full flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-colors text-left">
+                        <span class="min-w-0 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-emerald-700 shrink-0" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <span id="setMenuLabel"
+                                class="truncate text-xs sm:text-sm font-semibold text-slate-800">All Sets</span>
+                        </span>
+                        <span class="flex items-center gap-2 shrink-0">
+                            <span id="setMenuCount"
+                                class="px-2 py-0.5 rounded-full text-[11px] bg-emerald-100 text-emerald-800 font-bold">0</span>
+                            <svg id="setMenuChevron" class="w-4 h-4 text-slate-500 transition-transform" fill="none"
+                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div id="yearTabsContainer"
+                        class="hidden absolute z-20 left-0 right-0 mt-2 max-h-72 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
+                        <!-- Populated dynamically via JS -->
+                    </div>
                 </div>
             </div>
 
@@ -177,31 +200,6 @@
                         </button>
                     </div>
                 </div>
-            </div>
-
-            <!-- Local Data Status Notice Banner -->
-            <div id="driveNoticeBanner"
-                class="bg-amber-50 border border-amber-200/90 rounded-2xl p-3.5 flex items-start justify-between gap-3 text-xs sm:text-sm text-amber-900">
-                <div class="flex items-start gap-2.5">
-                    <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor"
-                        stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
-                    </svg>
-                    <div>
-                        <p id="sheetSyncStatusText" class="font-semibold text-emerald-900">
-                            Loading local alumni.csv snapshot...
-                        </p>
-                        <p class="mt-0.5 text-amber-900/90">
-                            <span class="font-semibold">Update Tip:</span> Replace <code>alumni.csv</code> and the images in
-                            <code>passports/</code> to refresh this directory. No external links are used.
-                        </p>
-                    </div>
-                </div>
-                <button id="dismissNoticeBtn" type="button"
-                    class="text-amber-700 hover:text-amber-950 font-semibold px-2 py-0.5 rounded-lg">
-                    ✕
-                </button>
             </div>
 
             <!-- Alumni Cards Grid -->
@@ -617,13 +615,16 @@ Requirements:
         const totalAlumniBadge = document.getElementById('totalAlumniBadge');
         const yearTabsContainer = document.getElementById('yearTabsContainer');
         const activeSetSummary = document.getElementById('activeSetSummary');
+        const setMenuToggle = document.getElementById('setMenuToggle');
+        const setMenuLabel = document.getElementById('setMenuLabel');
+        const setMenuCount = document.getElementById('setMenuCount');
+        const setMenuChevron = document.getElementById('setMenuChevron');
         const searchInput = document.getElementById('searchInput');
         const departmentFilter = document.getElementById('departmentFilter');
         const resetFiltersBtn = document.getElementById('resetFiltersBtn');
         const alumniGrid = document.getElementById('alumniGrid');
         const emptyState = document.getElementById('emptyState');
         const contestantsContainer = document.getElementById('contestantsContainer');
-        const sheetSyncStatusText = document.getElementById('sheetSyncStatusText');
 
         // =========================================================================
         // 3. DATA NORMALIZATION & CSV PARSER FOR LOCAL CSV
@@ -773,8 +774,6 @@ Requirements:
         }
 
         async function loadLocalAlumni() {
-            sheetSyncStatusText.textContent = 'Loading local alumni.csv...';
-
             try {
                 const response = await fetch(LOCAL_CSV_URL, { cache: 'no-store' });
                 if (response.ok) {
@@ -782,9 +781,6 @@ Requirements:
                     const records = transformSheetRows(parseCSV(csvText));
                     if (records.length > 0) {
                         ALUMNI_DATA = records;
-                        const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                        sheetSyncStatusText.textContent =
-                            `Loaded ${ALUMNI_DATA.length} registered alumni for voting eligibility from local alumni.csv (${timeStr}).`;
                         refreshAllViews();
                         return;
                     }
@@ -792,7 +788,6 @@ Requirements:
             } catch (err) {}
 
             ALUMNI_DATA = [...FALLBACK_ALUMNI_DATA];
-            sheetSyncStatusText.textContent = `Showing ${ALUMNI_DATA.length} cached registered alumni for voting eligibility (add alumni.csv to this folder for updates).`;
             refreshAllViews();
         }
 
@@ -868,6 +863,18 @@ Requirements:
         // =========================================================================
         // 5. RENDERING: GRADUATION YEAR TABS, FILTERS & ALUMNI CARDS
         // =========================================================================
+        function closeSetMenu() {
+            yearTabsContainer.classList.add('hidden');
+            setMenuToggle.setAttribute('aria-expanded', 'false');
+            setMenuChevron.classList.remove('rotate-180');
+        }
+
+        function openSetMenu() {
+            yearTabsContainer.classList.remove('hidden');
+            setMenuToggle.setAttribute('aria-expanded', 'true');
+            setMenuChevron.classList.add('rotate-180');
+        }
+
         function renderYearTabs() {
             const yearCounts = {};
             ALUMNI_DATA.forEach((person) => {
@@ -877,37 +884,25 @@ Requirements:
             const sortedYears = Object.keys(yearCounts).sort((a, b) => a.localeCompare(b));
             totalAlumniBadge.textContent = ALUMNI_DATA.length;
 
+            const selectedCount = selectedYear === 'ALL' ? ALUMNI_DATA.length : (yearCounts[selectedYear] || 0);
+            setMenuLabel.textContent = selectedYear === 'ALL' ? 'All Sets' : `Set of ${selectedYear}`;
+            setMenuCount.textContent = selectedCount;
+
             let html = `
-        <button
-          type="button"
-          data-year="ALL"
-          class="year-tab-btn shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 ${selectedYear === 'ALL'
-                    ? 'bg-emerald-800 text-white shadow-sm'
-                    : 'bg-slate-100 hover:bg-slate-200/80 text-slate-700'
-                }"
-        >
+        <button type="button" data-year="ALL"
+          class="year-tab-btn w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-colors ${selectedYear === 'ALL' ? 'bg-emerald-800 text-white' : 'bg-white text-slate-700 hover:bg-emerald-50'}">
           <span>All Sets</span>
-          <span class="px-2 py-0.5 rounded-full text-[11px] ${selectedYear === 'ALL' ? 'bg-amber-400 text-emerald-950 font-bold' : 'bg-white text-slate-600'
-                }">${ALUMNI_DATA.length}</span>
-        </button>
-      `;
+          <span class="px-2 py-0.5 rounded-full text-[11px] ${selectedYear === 'ALL' ? 'bg-amber-400 text-emerald-950 font-bold' : 'bg-slate-100 text-slate-600'}">${ALUMNI_DATA.length}</span>
+        </button>`;
 
             sortedYears.forEach((yr) => {
                 const isActive = selectedYear === yr;
                 html += `
-          <button
-            type="button"
-            data-year="${yr}"
-            class="year-tab-btn shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 ${isActive
-                        ? 'bg-emerald-800 text-white shadow-sm'
-                        : 'bg-slate-100 hover:bg-slate-200/80 text-slate-700'
-                    }"
-          >
-            <span>Set of ${yr}</span>
-            <span class="px-2 py-0.5 rounded-full text-[11px] ${isActive ? 'bg-amber-400 text-emerald-950 font-bold' : 'bg-white text-slate-600'
-                    }">${yearCounts[yr]}</span>
-          </button>
-        `;
+        <button type="button" data-year="${yr}"
+          class="year-tab-btn w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-colors ${isActive ? 'bg-emerald-800 text-white' : 'bg-white text-slate-700 hover:bg-emerald-50'}">
+          <span>Set of ${yr}</span>
+          <span class="px-2 py-0.5 rounded-full text-[11px] ${isActive ? 'bg-amber-400 text-emerald-950 font-bold' : 'bg-slate-100 text-slate-600'}">${yearCounts[yr]}</span>
+        </button>`;
             });
 
             yearTabsContainer.innerHTML = html;
@@ -915,6 +910,7 @@ Requirements:
             document.querySelectorAll('.year-tab-btn').forEach((btn) => {
                 btn.addEventListener('click', () => {
                     selectedYear = btn.dataset.year;
+                    closeSetMenu();
                     renderYearTabs();
                     renderAlumniCards();
                 });
@@ -1387,15 +1383,31 @@ Requirements:
         navDirectoryBtn.addEventListener('click', () => {
             directorySection.classList.remove('hidden');
             contestantsSection.classList.add('hidden');
-            navDirectoryBtn.className = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-amber-500 text-emerald-950 shadow-sm';
-            navContestantsBtn.className = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all text-emerald-100 hover:text-white flex items-center gap-1.5';
+            navDirectoryBtn.className = 'flex-1 min-w-[150px] sm:flex-none justify-center px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-amber-500 text-emerald-950 shadow-sm';
+            navContestantsBtn.className = 'flex-1 min-w-[150px] sm:flex-none justify-center px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all text-emerald-100 hover:text-white flex items-center gap-1.5';
         });
 
         navContestantsBtn.addEventListener('click', () => {
             contestantsSection.classList.remove('hidden');
             directorySection.classList.add('hidden');
-            navContestantsBtn.className = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-amber-500 text-emerald-950 shadow-sm flex items-center gap-1.5';
-            navDirectoryBtn.className = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all text-emerald-100 hover:text-white';
+            navContestantsBtn.className = 'flex-1 min-w-[150px] sm:flex-none justify-center px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-amber-500 text-emerald-950 shadow-sm flex items-center gap-1.5';
+            navDirectoryBtn.className = 'flex-1 min-w-[150px] sm:flex-none justify-center px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all text-emerald-100 hover:text-white';
+        });
+
+        setMenuToggle.addEventListener('click', () => {
+            if (yearTabsContainer.classList.contains('hidden')) {
+                openSetMenu();
+            } else {
+                closeSetMenu();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#setMenuToggle, #yearTabsContainer')) closeSetMenu();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSetMenu();
         });
 
         // Filter Events
@@ -1417,10 +1429,6 @@ Requirements:
             departmentFilter.value = 'ALL';
             renderYearTabs();
             renderAlumniCards();
-        });
-
-        document.getElementById('dismissNoticeBtn').addEventListener('click', () => {
-            document.getElementById('driveNoticeBanner').classList.add('hidden');
         });
 
         function refreshAllViews() {
