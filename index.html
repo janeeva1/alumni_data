@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Veritas University Registered Alumni for Voting Eligibility & Election Portal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        vuna: {
+                            green: '#065f46',
+                            dark: '#022c22',
+                            light: '#ecfdf5',
+                            gold: '#d97706',
+                            goldLight: '#fef3c7',
+                        },
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        html,
+        body {
+            max-width: 100%;
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+    <!-- Top University Header -->
+    <header
+        class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-900 text-white shadow-lg sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <!-- Brand & Title -->
+                <div class="flex items-center gap-3.5">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center shrink-0 shadow-inner">
+                        <svg class="w-7 h-7 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.8"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14v7" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">Veritas University Alumni
+                            </h1>
+                            <span
+                                class="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">Registered Alumni</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-emerald-200/90 mt-0.5">Registered Alumni for Voting Eligibility
+                            &amp; Executive Election Portal</p>
+                    </div>
+                </div>
+
+                <!-- Primary Navigation Switcher & Actions -->
+                <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                    <div class="flex flex-wrap rounded-xl bg-emerald-950/80 p-1 border border-emerald-700/60">
+                        <button id="navDirectoryBtn" type="button"
+                            class="flex-1 min-w-[150px] sm:flex-none justify-center px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-amber-500 text-emerald-950 shadow-sm">
+                            Registered Alumni (<span id="totalAlumniBadge">0</span>)
+                        </button>
+                        <button id="navContestantsBtn" type="button"
+                            class="flex-1 min-w-[150px] sm:flex-none justify-center px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all text-emerald-100 hover:text-white flex items-center gap-1.5">
+                            <span>Election Contestants</span>
+                            <span class="px-1.5 py-0.2 rounded-full text-[11px] bg-emerald-800 text-amber-300">9</span>
+                        </button>
+                    </div>
+
+                    <a href="alumni.csv" download
+                        class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium bg-emerald-800/90 hover:bg-emerald-700 text-emerald-100 border border-emerald-600/50 transition-all flex items-center gap-1.5"
+                        title="Download alumni.csv">
+                        <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v3h16v-3" />
+                        </svg>
+                        <span class="hidden sm:inline">alumni.csv</span>
+                    </a>
+
+                    <!-- <button id="openPromptModalBtn" type="button"
+                        class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium bg-white/10 hover:bg-white/20 text-white border border-white/15 transition-all flex items-center gap-1.5"
+                        title="Copy reusable prompt template">
+                        <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        <span class="hidden sm:inline">Get Prompt</span>
+                    </button> -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- =================================================================== -->
+        <!-- VIEW 1: ALUMNI DIRECTORY BY GRADUATION SET                          -->
+        <!-- =================================================================== -->
+        <section id="directorySection" class="space-y-6">
+            <div>
+                <h2 class="text-lg sm:text-xl font-bold text-slate-900">Registered Alumni for Voting Eligibility</h2>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Registered alumni records eligible to vote in the
+                    executive election.</p>
+            </div>
+
+            <!-- Graduation Year Set Tabs Menu -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-3 sm:p-4">
+                <div class="flex items-center justify-between mb-2.5 px-1">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Select Graduation Year (Set
+                        Menu)</span>
+                    <span id="activeSetSummary"
+                        class="text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">Showing All
+                        Sets</span>
+                </div>
+                <div id="yearTabsContainer" class="flex flex-wrap items-center gap-2 pb-1.5">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Search & Department Filter Bar -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+                    <!-- Search Input -->
+                    <div class="md:col-span-6 relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                            </svg>
+                        </div>
+                        <input id="searchInput" type="text"
+                            placeholder="Search by full name, matric number, or department..."
+                            class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/70 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 text-sm outline-none transition-all" />
+                    </div>
+
+                    <!-- Department Filter -->
+                    <div class="md:col-span-4">
+                        <select id="departmentFilter"
+                            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/70 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 text-sm outline-none transition-all">
+                            <option value="ALL">All Departments / Courses</option>
+                        </select>
+                    </div>
+
+                    <!-- Reset Filters Button -->
+                    <div class="md:col-span-2 flex justify-end">
+                        <button id="resetFiltersBtn" type="button"
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-sm font-medium transition-all">
+                            Reset Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Local Data Status Notice Banner -->
+            <div id="driveNoticeBanner"
+                class="bg-amber-50 border border-amber-200/90 rounded-2xl p-3.5 flex items-start justify-between gap-3 text-xs sm:text-sm text-amber-900">
+                <div class="flex items-start gap-2.5">
+                    <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                        stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                    </svg>
+                    <div>
+                        <p id="sheetSyncStatusText" class="font-semibold text-emerald-900">
+                            Loading local alumni.csv snapshot...
+                        </p>
+                        <p class="mt-0.5 text-amber-900/90">
+                            <span class="font-semibold">Update Tip:</span> Replace <code>alumni.csv</code> and the images in
+                            <code>passports/</code> to refresh this directory. No external links are used.
+                        </p>
+                    </div>
+                </div>
+                <button id="dismissNoticeBtn" type="button"
+                    class="text-amber-700 hover:text-amber-950 font-semibold px-2 py-0.5 rounded-lg">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Alumni Cards Grid -->
+            <div id="alumniGrid" class="grid grid-cols-1 min-[380px]:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+                <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- Empty Search State -->
+            <div id="emptyState" class="hidden bg-white rounded-2xl border border-slate-200 p-12 text-center">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                    </svg>
+                </div>
+                <h3 class="text-base font-bold text-slate-800">No alumni match your search</h3>
+                <p class="text-sm text-slate-500 mt-1">Try selecting "All Sets" or clearing your search and department
+                    filters.</p>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- VIEW 2: ELECTION CONTESTANTS PAGE                                   -->
+        <!-- =================================================================== -->
+        <section id="contestantsSection" class="hidden space-y-6">
+            <!-- Election Banner -->
+            <div class="bg-gradient-to-r from-emerald-900 to-teal-800 rounded-2xl p-6 text-white shadow-md">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <span
+                            class="inline-block text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-300/30 mb-2">
+                            Veritas Alumni Association Elections
+                        </span>
+                        <h2 class="text-xl sm:text-2xl font-bold">Official Executive Council Contestants</h2>
+                        <p class="text-sm text-emerald-100/90 mt-1 max-w-2xl">
+                            Candidate profiles, passport photographs, matriculation numbers, and graduation sets linked
+                            directly from the alumni registry.
+                        </p>
+                    </div>
+                    <div
+                        class="flex items-center gap-3 bg-white/10 border border-white/15 rounded-xl px-4 py-3 shrink-0">
+                        <div>
+                            <div class="text-2xl font-extrabold text-amber-300">7</div>
+                            <div class="text-[11px] uppercase tracking-wider text-emerald-100">Offices</div>
+                        </div>
+                        <div class="h-8 w-px bg-white/20"></div>
+                        <div>
+                            <div class="text-2xl font-extrabold text-white">9</div>
+                            <div class="text-[11px] uppercase tracking-wider text-emerald-100">Aspirants</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contestant Positions List -->
+            <div id="contestantsContainer" class="space-y-6">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+            <p>Veritas University Registered Alumni for Voting Eligibility &bull; Organized by Graduation Set</p>
+            <!-- <button id="footerPromptBtn" type="button"
+                class="text-emerald-700 hover:text-emerald-900 font-semibold underline underline-offset-2">
+                Copy Directory Generation Prompt
+            </button> -->
+        </div>
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 0: ZOOMABLE PASSPORT IMAGE VIEWER                               -->
+    <!-- ===================================================================== -->
+    <div id="imageViewerModal"
+        class="fixed inset-0 z-[60] hidden items-center justify-center bg-slate-950/90 backdrop-blur-sm p-3 sm:p-6">
+        <div class="w-full max-w-5xl h-full max-h-[92vh] flex flex-col">
+            <div class="flex items-start justify-between gap-3 text-white mb-3">
+                <div class="min-w-0">
+                    <p id="zoomTitle" class="text-sm sm:text-base font-bold truncate">Passport photograph</p>
+                    <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5">Scroll to zoom • drag to pan • double-click to
+                        enlarge</p>
+                </div>
+                <button id="closeImageViewerBtn" type="button"
+                    class="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white text-lg transition-colors shrink-0">
+                    ✕
+                </button>
+            </div>
+
+            <div id="zoomStage"
+                class="relative flex-1 overflow-hidden rounded-2xl bg-slate-900/80 border border-white/10 touch-none cursor-grab">
+                <img id="zoomImage" src="" alt="" draggable="false"
+                    class="absolute left-1/2 top-1/2 max-w-none select-none will-change-transform hidden" />
+                <div id="zoomInitials"
+                    class="hidden absolute inset-0 bg-gradient-to-br from-emerald-800 to-teal-700 text-amber-300 text-5xl sm:text-7xl font-bold items-center justify-center select-none">
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-2 mt-3 text-white">
+                <button id="zoomOutBtn" type="button"
+                    class="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 text-xl font-bold transition-colors">−</button>
+                <button id="zoomResetBtn" type="button"
+                    class="px-4 h-10 rounded-xl bg-white/10 hover:bg-white/20 text-sm font-semibold transition-colors">Fit</button>
+                <button id="zoomInBtn" type="button"
+                    class="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 text-xl font-bold transition-colors">+</button>
+                <span id="zoomLevel"
+                    class="min-w-[3.5rem] text-center text-xs font-mono text-slate-300">100%</span>
+                <a id="zoomFileLink" href="#" target="_blank" rel="noopener noreferrer"
+                    class="hidden px-4 h-10 inline-flex items-center rounded-xl bg-amber-400 hover:bg-amber-300 text-emerald-950 text-sm font-bold transition-colors">
+                    Open Image File
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 1: ALUMNI / CONTESTANT FULL PROFILE MODAL                       -->
+    <!-- ===================================================================== -->
+    <div id="profileModal"
+        class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-xs p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full max-h-[92vh] shadow-2xl border border-slate-200 overflow-y-auto">
+            <div
+                class="bg-gradient-to-r from-emerald-900 to-teal-800 px-6 py-5 text-white flex items-center justify-between">
+                <div>
+                    <span id="modalSetBadge"
+                        class="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-300/30">
+                        Set of 2019
+                    </span>
+                    <h3 id="modalFullName" class="text-lg font-bold mt-1.5">Full Name</h3>
+                </div>
+                <button id="closeProfileModalBtn" type="button"
+                    class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+                    ✕
+                </button>
+            </div>
+
+            <div class="p-4 sm:p-6 space-y-5">
+                <div class="flex flex-col sm:flex-row items-center gap-5">
+                    <div id="modalAvatarBox"
+                        class="w-44 h-44 sm:w-52 sm:h-52 rounded-2xl overflow-hidden bg-emerald-50 border-2 border-emerald-200 shrink-0 flex items-center justify-center shadow-sm">
+                        <!-- Photo or Initials injected dynamically -->
+                    </div>
+                    <div class="text-center sm:text-left space-y-1.5">
+                        <div id="modalContestantBadge"
+                            class="hidden inline-block text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">
+                            Contestant
+                        </div>
+                        <p class="text-[11px] font-medium text-emerald-700">Click the photo to zoom</p>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Course of Study /
+                            Department</p>
+                        <p id="modalCourse" class="text-base font-bold text-slate-800">Department</p>
+                        <p class="text-xs font-mono font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg inline-block"
+                            id="modalMatric">
+                            VUG/XXX/00/000
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200/70 text-sm">
+                    <div>
+                        <span class="text-xs text-slate-400 block">Graduation Year</span>
+                        <span id="modalYear" class="font-semibold text-slate-800">2019</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 block">Email Address</span>
+                        <span id="modalEmail" class="font-medium text-slate-700 break-all">email@example.com</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 block">Phone Number</span>
+                        <span id="modalPhone" class="font-medium text-slate-700">08000000000</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+                    <a id="modalPassportLink" href="#" target="_blank" rel="noopener noreferrer"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold transition-all shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        <span>Open Passport File</span>
+                    </a>
+                    <button id="modalDoneBtn" type="button"
+                        class="px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-sm font-semibold transition-all">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 2: REUSABLE PROMPT GENERATOR MODAL                              -->
+    <!-- ===================================================================== -->
+    <div id="promptModal"
+        class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-xs p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[92vh] shadow-2xl border border-slate-200 overflow-y-auto">
+            <div class="bg-slate-900 px-6 py-4 text-white flex items-center justify-between">
+                <h3 class="text-base sm:text-lg font-bold">Reusable Alumni Directory &amp; Election Prompt</h3>
+                <button id="closePromptModalBtn" type="button"
+                    class="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white">
+                    ✕
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p class="text-xs sm:text-sm text-slate-600">
+                    Copy the prompt below whenever you want to generate or update this Veritas University Alumni
+                    Directory with new alumni.csv rows or election contestants:
+                </p>
+                <textarea id="promptTextarea" rows="9" readonly
+                    class="w-full p-3.5 rounded-2xl border border-slate-200 bg-slate-50 text-xs sm:text-sm font-mono text-slate-800 focus:outline-none"></textarea>
+                <div class="flex items-center justify-between gap-3">
+                    <span id="copySuccessMsg"
+                        class="text-xs font-semibold text-emerald-700 opacity-0 transition-opacity">
+                        Copied to clipboard!
+                    </span>
+                    <div class="flex items-center gap-2">
+                        <button id="copyPromptBtn" type="button"
+                            class="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold transition-all">
+                            Copy Prompt
+                        </button>
+                        <button id="closePromptBottomBtn" type="button"
+                            class="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-sm font-semibold">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="passports/manifest.js"></script>
+    <script>
+        // =========================================================================
+        // 1. LOCAL DATA CONFIGURATION & EMBEDDED FALLBACK DATASET
+        // =========================================================================
+        const LOCAL_CSV_URL = 'alumni.csv';
+
+        const FALLBACK_ALUMNI_DATA = [
+            { timestamp: '10/28/2026 14:52:17', email: 'nwanosikenma123@gmail.com', phone: '09075582104', name: 'Nwanosike Keziah Chimanma', matric: 'VUG/BIO/17/2255', course: 'Microbiology', year: '2021', country: 'Ghana' },
+            { timestamp: '10/28/2026 15:05:48', email: 'helenobochi233@gmail.com', phone: '08132322804', name: 'Obochi Helen Omada', matric: 'VUG/GCE/22/7537', course: 'Guidance and Counselling Education (GCE)', year: '2025', country: 'Nigeria' },
+            { timestamp: '10/28/2026 19:02:20', email: 'raphaelsdalyop@gmail.com', phone: '08142992345', name: 'Dalyop Raphael S.', matric: 'VUG/BUS/3928', course: 'Business Administration', year: '2024', country: 'Nigeria' },
+            { timestamp: '10/29/2026 8:23:44', email: 'ugotex004@gmail.com', phone: '07037535768', name: 'Ugochukwu Francis Nweke', matric: 'VUG/POL/15/884', course: 'Political Science and Diplomacy', year: '2019', country: 'Nigeria' },
+            { timestamp: '10/29/2026 9:12:47', email: 'kadirifrancis1@gmail.com', phone: '08063571978', name: 'Kadiri Francis Ozemoya', matric: 'VUG/BIO/17/1941', course: 'Microbiology', year: '2021', country: 'Nigeria' },
+            { timestamp: '10/29/2026 19:39:25', email: 'patricksunday20@gmail.com', phone: '08138465198', name: 'Sunday Ibbi Patrick', matric: 'VUG/ENG/15/1168', course: 'English and Literary Studies', year: '2019', country: 'Nigeria' },
+            { timestamp: '10/29/2026 21:09:53', email: 'ezehcynthia80@gmail.com', phone: '07018620095', name: 'Ezeh Chisom Cynthia', matric: 'VUG/CHM/15/1017', course: 'Industrial Chemistry', year: '2019', country: 'Nigeria' },
+            { timestamp: '10/30/2026 12:07:59', email: 'vivienetimothy@gmail.com', phone: '08103214487', name: 'Vivian Nyam Gyang', matric: 'VUG/HIS/15/1183', course: 'History and International Relations', year: '2019', country: 'Nigeria' },
+            { timestamp: '10/30/2026 12:30:48', email: 'menaighedosa@gmail.com', phone: '09121749663', name: 'Ighedosa Mena', matric: 'VUG/POL/13/638', course: 'Political Science and Diplomacy', year: '2017', country: 'Nigeria' },
+            { timestamp: '10/30/2026 12:46:52', email: 'nyamvictor00@gmail.com', phone: '07040803148', name: 'Nyam Victor', matric: 'VUG/BUS/15/1206', course: 'Business Administration', year: '2019', country: 'Nigeria' },
+            { timestamp: '10/31/2026 22:42:16', email: 'bejabefio@gmail.com', phone: '07047963734', name: 'Bernice Ejabefio', matric: 'VUG/PUB/19/3678', course: 'Public Administration', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/1/2026 4:55:47', email: 'ojoboanastacia@gmail.com', phone: '08100753670', name: 'Ojobo Ifeanyichukwu Anastacia', matric: 'VUG/HIS/16/1554', course: 'History and International Relations', year: '2020', country: 'Nigeria' },
+            { timestamp: '11/1/2026 22:01:51', email: 'dagbaghare@gmail.com', phone: '09033242194', name: 'Daniel Agbaghare', matric: 'VUG/CHM/10/259', course: 'Industrial Chemistry', year: '2014', country: 'Nigeria' },
+            { timestamp: '11/2/2026 0:52:26', email: 'ezekielephraim30@yahoo.com', phone: '08137868853', name: 'Ezekiel Ephraim', matric: 'VUG/POL/11/326', course: 'Political Science and Diplomacy', year: '2015', country: 'United Kingdom' },
+            { timestamp: '11/2/2026 9:11:17', email: 'gilenyanorahnzalaa@gmail.com', phone: '+234 7054556080', name: "Norah Nzala'a Gilenya", matric: 'VUG/ENG/19/3131', course: 'English and Literary Studies', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/2/2026 12:00:04', email: 'emuovheemmanuel@gmail.com', phone: '08169851903', name: 'Emmanuel Leon Oghenekaro Emuovhe', matric: 'VUG/CSC/20/4639', course: 'Computer Science', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/2/2026 20:20:26', email: 'Issacdivine@gmail.com', phone: '09063651307', name: 'Divine-Fortune Isaac', matric: 'VUG/HIS/15/980', course: 'History and International Relations', year: '2019', country: 'Nigeria' },
+            { timestamp: '11/2/2026 21:01:35', email: 'lovelineonwukeme@gmail.com', phone: '08064624718', name: 'Loveline Chidiebere Onwukeme', matric: 'VUG/ACC/20/3977', course: 'Accounting', year: '2023', country: 'Nigeria (FCT)' },
+            { timestamp: '11/2/2026 21:25:05', email: 'mchlmodey@gmail.com', phone: '08163566630', name: 'Modey Michael Ufahishor', matric: 'VUG/ACC/19/3079', course: 'Accounting', year: '2023', country: 'Niger' },
+            { timestamp: '11/3/2026 4:59:35', email: 'amangwaipraisediyak@gmail.com', phone: '09022064994', name: 'Amangwai Praise Diyak', matric: 'VUG/HIS/19/3197', course: 'History and International Relations', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/3/2026 11:32:27', email: 'judyokafor2265@gmail.com', phone: '09016746813', name: 'Okafor Chinecherem Judith', matric: 'VUG/MCB/19/3117', course: 'Microbiology', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/3/2026 15:58:23', email: 'faithterver665@gmail.com', phone: '09028853812', name: 'Faith Aondonguemo Terver-Adzer', matric: 'VUG/HIS/20/4737', course: 'History and International Relations', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/3/2026 20:45:17', email: 'marthaasom@gmail.com', phone: '08123045770', name: 'Martha Mnena Asom', matric: 'VUNA/ENG/13/520', course: 'English and Literary Studies', year: '2023', country: 'Nigeria (Abuja)' },
+            { timestamp: '11/4/2026 9:01:05', email: 'micbrite@gmail.com', phone: '09018115727', name: 'Bright Michael Nwaokorie', matric: 'VUG/PHL/20/5062', course: 'Philosophy', year: '2024', country: 'Nigeria' },
+            { timestamp: '11/9/2026 12:36:21', email: 'aneketelma123@gmail.com', phone: '08140982920', name: 'Telma Onyinyechi Aneke', matric: 'VUG/CSC/19/3685', course: 'Computer Science', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/9/2026 13:13:11', email: 'abejirinboluwatife@gmail.com', phone: '09063218160', name: 'Abejirin Boluwatife Favour', matric: 'VUG/CSC/19/3414', course: 'Computer Science and Information Technology', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/9/2026 18:13:53', email: 'justina.anase@gmail.com', phone: '09063115772', name: 'Justina Francis', matric: 'VUG/ENG/19/3754', course: 'English and Literary Studies', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/9/2026 21:16:50', email: 'dubesbernard@gmail.com', phone: '09137668835', name: 'Dube Bernard Sunday', matric: 'VUG/POL/19/3287', course: 'Political Science and Diplomacy', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/12/2026 9:28:37', email: 'michelleprisca52@gmail.com', phone: '08120544849', name: 'Prisca Ugwu', matric: 'VUG/ACC/15/1007', course: 'Accounting', year: '2019', country: 'Nigeria' },
+            { timestamp: '11/15/2026 22:04:46', email: 'cynthiaamara84@gmail.com', phone: '08143448972', name: 'Atueyi Cynthia Amara', matric: 'VUG/BCH/16/1581', course: 'Biochemistry', year: '2020', country: 'Nigeria' },
+            { timestamp: '11/17/2026 9:25:49', email: 'chigoziechristopher30@gmail.com', phone: '08085956446', name: 'Okafor Chigozie Christopher', matric: 'VUG/PHY/15/930', course: 'Physics with Electronics', year: '2019', country: 'Nigeria' },
+            { timestamp: '11/17/2026 10:11:59', email: 'anaborolere@gmail.com', phone: '09052127107', name: 'Anabor Olere H.', matric: 'VUG/ECO/18/2854', course: 'Economics', year: '2022', country: 'Nigeria' },
+            { timestamp: '11/18/2026 8:30:37', email: 'Charlesnnaemka11@gmail.com', phone: '07036337546', name: 'Charles Edeh', matric: 'VUG/CHM/10/253', course: 'Industrial Chemistry', year: '2014', country: 'Nigeria' },
+            { timestamp: '11/18/2026 9:14:54', email: 'meeksonadaje@gmail.com', phone: '09038711256', name: 'Michael Adaje', matric: 'VUG/MCB/3637', course: 'Microbiology', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/18/2026 20:20:07', email: 'mshimuan@gmail.com', phone: '08123837954', name: 'Maria Shimuan', matric: 'VUG/PHL/15/1061', course: 'Philosophy', year: '2019', country: 'Nigeria' },
+            { timestamp: '11/18/2026 20:32:45', email: 'ujikhomfort@gmail.com', phone: '08122093468', name: 'Msurshima Uji', matric: 'VUG/CSC/17/2278', course: 'Computer Science', year: '2021', country: 'Nigeria' },
+            { timestamp: '11/18/2026 20:36:39', email: 'jamespaulchiemela@gmail.com', phone: '07012675437', name: 'James Paul Chiemela', matric: 'VUG/PHY/15/1230', course: 'Physics', year: '2019', country: 'Nigeria' },
+            { timestamp: '11/18/2026 20:37:56', email: 'stephanieumeh2004@gmail.com', phone: '09023306168', name: 'Umeh Oluebubechukwu Stephanie', matric: 'VUG/MAC/21/5547', course: 'Mass Communication', year: '2025', country: 'Nigeria' },
+            { timestamp: '11/18/2026 20:38:04', email: 'abuprecious49@gmail.com', phone: '08027139238', name: 'Abu Precious Chidi', matric: 'VUG/ACC/12/493', course: 'Accounting', year: '2016', country: 'Nigeria' },
+            { timestamp: '11/18/2026 20:43:18', email: 'ebijemsjnr@gmail.com', phone: '+2348086595331', name: 'Lawrence Ebi', matric: 'VUG/POL/12/428', course: 'Political Science and Diplomacy', year: '2016', country: 'Trinidad and Tobago' },
+            { timestamp: '11/18/2026 20:44:26', email: 'tehssie2001@gmail.com', phone: '08120126041', name: 'Emem Dorcas Edet', matric: 'VUG/BCH/16/1542', course: 'Biochemistry', year: '2020', country: 'Nigeria' },
+            { timestamp: '11/18/2026 20:51:44', email: 'justusuwanta@gmail.com', phone: '08069691845', name: 'Uwanta, Justus Okezie', matric: 'VUG/BCH/17/1969', course: 'Biochemistry', year: '2021', country: 'Nigeria' },
+            { timestamp: '11/18/2026 21:02:24', email: 'kalumat@veritas.edu.ng', phone: '07025622967', name: 'Teresia Kaluma', matric: 'VUG/ENT/19/3125', course: 'Entrepreneurship', year: '2022', country: 'Nigeria' },
+            { timestamp: '11/18/2026 21:02:25', email: 'Osathoniaoyegue@gmail.com', phone: '09033399089', name: 'Anthonia Oyegue', matric: 'VUG/MCB/11/316', course: 'Microbiology', year: '2015', country: 'Nigeria' },
+            { timestamp: '11/18/2026 21:07:39', email: 'marvellousuwa400@gmail.com', phone: '09013877822', name: 'Marvellous Uwa', matric: 'VUG/CSC/19/3724', course: 'Computer Science', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/18/2026 22:54:08', email: 'Igellework@gmail.com', phone: '08138750490', name: 'Grace Uguru', matric: 'VUG/HIS/20/4482', course: 'History and International Relations', year: '2024', country: 'Nigeria' },
+            { timestamp: '11/18/2026 22:55:29', email: 'smavevictor@gmail.com', phone: '08133094501', name: 'Gazu Victor Chuwang', matric: 'VUG/BCH/17/2319', course: 'Biochemistry', year: '2022', country: 'Nigeria' },
+            { timestamp: '11/18/2026 23:45:47', email: 'nanmansolomon23@gmail.com', phone: '09063649607', name: 'Solomon Nanman Sunday', matric: 'VUG/HIS/20/4090', course: 'History and International Relations', year: '2024', country: 'Nigeria' },
+            { timestamp: '11/19/2026 1:17:57', email: 'giftsamuel3322@gmail.com', phone: '08169279243', name: 'Gift Samuel', matric: 'VUG/EEM/16/1560', course: 'Educational Management', year: '2019', country: 'Nigeria' },
+            { timestamp: '11/19/2026 4:04:34', email: 'nwachukwummesoma51@gmail.com', phone: '09161856859', name: 'Nwachukwu Mmesoma Glory', matric: 'VUG/ECH/20/4096', course: 'Chemistry Education', year: '2024', country: 'Nigeria' },
+            { timestamp: '11/19/2026 5:31:25', email: 'nwachukwuebukap@gmail.com', phone: '08138303461', name: 'Nwachukwu Chukwuebuka Stephen', matric: 'VUG/BUS/18/2775', course: 'Business Administration', year: '2022', country: 'Nigeria' },
+            { timestamp: '11/19/2026 5:48:24', email: 'omalesusan33@gmail.com', phone: '08111688547', name: 'Susan Omale', matric: 'VUNA/19/1216', course: 'English and Literary Studies', year: '2019', country: 'Nigeria' },
+            { timestamp: '11/19/2026 6:54:19', email: 'onajiabraham@gmail.com', phone: '07087442012', name: 'Abraham Adamu Onaji', matric: 'VUG/ACC/12/376', course: 'Accounting', year: '2016', country: 'Nigeria' },
+            { timestamp: '11/19/2026 8:05:23', email: 'Billokure99@gmail.com', phone: '08085506841', name: 'Bill Edidiong Anthony Okure', matric: 'VUG/ECO/17/1939', course: 'Economics', year: '2021', country: 'Nigeria (Abuja)' },
+            { timestamp: '11/19/2026 8:55:05', email: 'perepetualchinyere11@gmail.com', phone: '09028540063', name: 'Anyaogu Chinyere Perpetual', matric: 'VUG/ENG/2016/1373', course: 'English and Literary Studies', year: '2020', country: 'Nigeria' },
+            { timestamp: '11/19/2026 9:04:17', email: 'pweetyestella@gmail.com', phone: '08155211072', name: 'Ogbua, Ezinne Estella', matric: 'VUG/ACC/15/913', course: 'Accounting', year: '2019', country: 'Nigeria' },
+            { timestamp: '11/19/2026 9:04:46', email: 'onuegbujane32@gmail.com', phone: '09022022926', name: 'Onuegbu Ifeoma Jane', matric: 'VUNA/EEM/3601', course: 'Educational Management', year: '2022', country: 'Nigeria' },
+            { timestamp: '11/19/2026 9:31:56', email: 'tianapatrickglory2000@gmail.com', phone: '08089941649', name: 'Chukwubike Glory Ekene', matric: 'VUG/BIO/16/1318', course: 'Microbiology', year: '2016', country: 'Nigeria' },
+            { timestamp: '11/19/2026 9:36:26', email: 'noridangelo@gmail.com', phone: '08035932888', name: 'Edeh Chigbo Gabriel', matric: 'VUG/POL/15/1108', course: 'Political Science and Diplomacy', year: '2019', country: 'Nigeria' },
+            { timestamp: '11/19/2026 11:19:09', email: 'akonamj@gmail.com', phone: '07084083162', name: 'Jude Akonam', matric: 'VUG/ECO/12/472', course: 'Economics', year: '2016', country: 'Nigeria' },
+            { timestamp: '11/19/2026 12:15:12', email: 'ebubeukah@yahoo.co.uk', phone: '07032339656', name: 'Ebubechukwu Ukah', matric: 'VUG/POL/12/385', course: 'Political Science and Diplomacy', year: '2012', country: 'Nigeria' },
+            { timestamp: '11/19/2026 12:37:31', email: 'Jessyjohn7792@gmail.com', phone: '08162884382', name: 'JesusReign Onimisi-Jimoh', matric: 'VUG/ECO/17/1875', course: 'Economics', year: '2021', country: 'Nigeria' },
+            { timestamp: '11/19/2026 12:49:31', email: 'oguhvictor20@gmail.com', phone: '08106610405', name: 'Oguh, Victor C.', matric: 'VUG/ENT/15/870', course: 'Entrepreneurship', year: '2019', country: 'Nigeria (Abuja)' },
+            { timestamp: '11/19/2026 13:16:06', email: 'jiamebawa@gmail.com', phone: '09061898553', name: 'Njiame Ambi Bawa', matric: 'VUG/POL/12/506', course: 'Political Science and Diplomacy', year: '2016', country: 'Nigeria' },
+            { timestamp: '11/19/2026 14:06:11', email: 'vnnagboro@gmail.com', phone: '07080276749', name: 'Vincent Nnagboro', matric: 'VUG/POL/12/425', course: 'Political Science and Diplomacy', year: '2016', country: 'Nigeria' },
+            { timestamp: '11/19/2026 14:45:34', email: 'okoyeanthony2022@gmail.com', phone: '07081150709', name: 'Okoye Anthony Chidiebele', matric: 'VUG/CSC/18/2857', course: 'Computer Science', year: '2022', country: 'Nigeria' },
+            { timestamp: '11/19/2026 14:55:18', email: 'emmanuellaifunanya97@gmail.com', phone: '09030514690', name: 'Ifunanya Emmanuella Onyebuchi', matric: 'VUG/HIS/18/3028', course: 'History and International Relations', year: '2022', country: 'Nigeria' },
+            { timestamp: '11/19/2026 14:57:49', email: 'joyjoyboyo@gmail.com', phone: '09056203503', name: 'Joy Boyo', matric: 'VUG/ACC/19/3089', course: 'Accounting', year: '2022', country: 'Nigeria' },
+            { timestamp: '11/19/2026 15:37:49', email: 'Jamesabang505@gmail.com', phone: '08165350405', name: 'Abang James', matric: 'VUG/POL/2078', course: 'Political Science and Diplomacy', year: '2021', country: 'Nigeria (Abuja)' },
+            { timestamp: '11/19/2026 16:09:29', email: 'triciaobaz@gmail.com', phone: '+16132556576', name: 'Patricia Umejei', matric: 'VUG/12/ACC/380', course: 'Accounting', year: '2016', country: 'Canada' },
+            { timestamp: '11/19/2026 16:44:46', email: 'alacksr@gmail.com', phone: '07010196553', name: 'Alacks Rabbi', matric: 'VUG/BCH/18/2643', course: 'Biochemistry', year: '2022', country: 'Nigeria' },
+            { timestamp: '11/19/2026 17:37:47', email: 'benpleadership@gmail.com', phone: '08112961692', name: 'Benjamin Idam', matric: 'VUG/MAC/16/1412', course: 'Mass Communication', year: '2020', country: 'Nigeria' },
+            { timestamp: '11/19/2026 18:22:05', email: 'mosesyinahdhen@gmail.com', phone: '09061420855', name: 'Moses Lucy Yinahdhen', matric: 'VUG/HIS/18/2608', course: 'History and International Relations', year: '2022', country: 'Nigeria' },
+            { timestamp: '11/19/2026 18:31:34', email: 'daemangprincemakengo@gmail.com', phone: '08152337597', name: 'Daemang Prince Makengo', matric: 'VUG/EEG/20/4872', course: 'Electrical/Electronic Engineering', year: '2025', country: 'Nigeria' },
+            { timestamp: '11/19/2026 20:36:08', email: 'uisaiah85@gmail.com', phone: '08084735357', name: 'Uganden Isaiah Terngu', matric: 'VUG/HIS/19/3144', course: 'History and International Relations', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/19/2026 21:03:31', email: 'wendyorngujudith@gmail.com', phone: '08134404723', name: 'Orngu Doowuese Judith', matric: 'VUG/HIS/19/000', course: 'History and International Relations', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/19/2026 21:17:30', email: 'uchennaudoji@gmail.com', phone: '+2349035563015', name: 'Uchenna Udoji', matric: 'VUG/MSC/ECO/22/8614', course: 'Economics', year: '2027', country: 'United States' },
+            { timestamp: '11/19/2026 21:41:49', email: 'manuelotetah@gmail.com', phone: '09030391692', name: 'Emmanuel Otetah', matric: 'VUG/ECO/15/888', course: 'Economics', year: '2019', country: 'United Kingdom' },
+            { timestamp: '11/19/2026 22:19:41', email: 'chinakajuliet86@gmail.com', phone: '08065525221', name: 'Chinaka, Juliet C.', matric: 'VUG/ACC/15/923', course: 'Accounting', year: '2019', country: 'Nigeria' },
+            { timestamp: '11/20/2026 7:15:44', email: 'lifeofrence@gmail.com', phone: '08101012201', name: 'Lawrence Ojor Christopher', matric: 'VUG/CSC/17/2031', course: 'Computer Science', year: '2021', country: 'Nigeria' },
+            { timestamp: '11/20/2026 8:27:14', email: 'cynthianarimi@gmail.com', phone: '09036634525', name: 'Cynthia Christopher Narimi', matric: 'VUG/CHM/19/3801', course: 'Industrial Chemistry', year: '2023', country: 'Nigeria' },
+            { timestamp: '11/20/2026 8:53:20', email: 'anijudyuju@gmail.com', phone: '070368006001', name: 'Judith Uju Ani', matric: 'VUG/HIS/15/892', course: 'History and International Relations', year: '2019', country: 'Australia' },
+            { timestamp: '11/20/2026 11:28:52', email: 'kpeinomchristopher847@gmail.com', phone: '08153567788', name: 'Kpeinom Joseph Christopher', matric: 'VUG/MAC/21/6211', course: 'Mass Communication', year: '2025', country: 'Nigeria' },
+            { timestamp: '11/20/2026 11:41:05', email: 'chiomasnelson@gmail.com', phone: '08083010380', name: 'Chioma Nelson', matric: 'VUG/BIO/13/515', course: 'Applied Microbiology', year: '2017', country: 'Nigeria' },
+            { timestamp: '11/20/2026 12:06:08', email: 'Lyzeemakanju@gmail.com', phone: '07067423276', name: 'Elizabeth Makanju', matric: 'VUG/HIS/17/2070', course: 'History and International Relations', year: '2021', country: 'Nigeria' },
+            { timestamp: '11/20/2026 12:21:37', email: 'janeken895@gmail.com', phone: '09051053398', name: 'Damulak Janet Naanman', matric: 'VUG/EEM/20/4538', course: 'Educational Management', year: '2024', country: 'Nigeria' },
+            { timestamp: '11/20/2026 13:07:53', email: 'chukwunetac@gmail.com', phone: '08027542062', name: 'Chukwuneta Chukwuebuka Cyprian-Paul', matric: 'VUG/POL/08/053', course: 'Political Science and Diplomacy', year: '2012', country: 'Nigeria' },
+            { timestamp: '11/20/2026 21:30:50', email: 'danlamipheona7@gmail.com', phone: '09115365028', name: 'Danlami Patience Zakwoyi', matric: 'VUG/16/ACC/1694', course: 'Accounting', year: '2020', country: 'Nigeria' },
+            { timestamp: '11/20/2026 21:41:47', email: 'breealfred5@gmail.com', phone: '08118170264', name: 'Bridget Onyogba Otobo', matric: 'VUG/ECO/14/687', course: 'Economics', year: '2018', country: 'Not Specified' },
+            { timestamp: '11/20/2026 22:21:09', email: 'zilove994@gmail.com', phone: '07014359744', name: 'Ozioma Lovelyn Ugwu', matric: 'VUG/BIO/12/441', course: 'Applied Microbiology', year: '2016', country: 'Not Specified' },
+            { timestamp: '11/20/2026 22:58:22', email: 'igoche65@gmail.com', phone: '07089164571', name: 'Mary Igoche', matric: 'VUG/BUS/18/2620', course: 'Business Administration', year: '2022', country: 'Nigeria' }
+        ];
+
+        let ALUMNI_DATA = [...FALLBACK_ALUMNI_DATA];
+
+        const ELECTION_OFFICES = [
+            {
+                title: 'President',
+                badge: 'Executive Head',
+                candidates: [
+                    { ballotNumber: 1, name: 'Okafor Chigozie', searchTerms: ['okafor chigozie'] },
+                ],
+            },
+            {
+                title: '1st Vice President',
+                badge: 'Vice Presidency',
+                candidates: [
+                    { ballotNumber: 1, name: 'Anselm Maichiki', searchTerms: ['anselm maichiki'] },
+                    { ballotNumber: 2, name: 'Dangerh Johnmark', searchTerms: ['dangerh johnmark'] },
+                ],
+            },
+            {
+                title: '2nd Vice President',
+                badge: 'Vice Presidency',
+                candidates: [
+                    { ballotNumber: 1, name: 'Emem Dorcas Edet', searchTerms: ['emem dorcas edet'] },
+                ],
+            },
+            {
+                title: 'National Secretary',
+                badge: 'Secretariat',
+                candidates: [
+                    { ballotNumber: 1, name: 'Oguh Victor', searchTerms: ['oguh, victor', 'oguh victor'] },
+                ],
+            },
+            {
+                title: 'National Assistant Secretary',
+                badge: 'Secretariat',
+                candidates: [
+                    { ballotNumber: 1, name: 'Mbah Emmanuel Onyinyechi', searchTerms: ['mbah emmanuel onyinyechi'] },
+                ],
+            },
+            {
+                title: 'National Social Secretary',
+                badge: 'Welfare & Socials',
+                candidates: [
+                    { ballotNumber: 1, name: 'Isaiah Terngu Uganden', searchTerms: ['uganden isaiah', 'isaiah terngu uganden'] },
+                    { ballotNumber: 2, name: 'Oche Divine Francis', searchTerms: ['oche divine francis'] },
+                ],
+            },
+            {
+                title: 'Publicity Secretary',
+                badge: 'Media & Publicity',
+                candidates: [
+                    { ballotNumber: 1, name: 'Ibe Linus Vincent', searchTerms: ['ibe linus vincent'] },
+                ],
+            },
+        ];
+
+        const PROMPT_TEMPLATE = `Build a single-file responsive web application (HTML, Tailwind CSS, Vanilla JS) for the Veritas University Registered Alumni for Voting Eligibility & Executive Election Portal using only local static files.
+
+Requirements:
+1. Local data: Load a local alumni.csv export from the deployed root, parse it on load with deduplication and normalization of departments/years/countries, and keep an embedded offline fallback dataset.
+2. Graduation Set Menus (Tabs): Group alumni chronologically by Year of Graduation with member count badges and an "All Sets" overview.
+3. Alumni Cards & Local Passports: Display optimized passport photos from the deployed passports/ folder (mapped by email/matric/name in passports/manifest.js), falling back to initials avatars; show Full Name, Department, Matriculation Number, and direct local photo links with zoom.
+4. Search & Department Filter: Instant search across names, matric numbers, courses, and countries, plus a department dropdown and full-detail modal.
+5. Election Contestants Page: Group Executive Council offices and candidates in ballot order, automatically pulling matching photos, departments, matric numbers, and graduation sets from the alumni registry.`;
+
+        // =========================================================================
+        // 2. APPLICATION STATE & DOM REFERENCES
+        // =========================================================================
+        let selectedYear = 'ALL';
+        let selectedDepartment = 'ALL';
+        let searchQuery = '';
+
+        const navDirectoryBtn = document.getElementById('navDirectoryBtn');
+        const navContestantsBtn = document.getElementById('navContestantsBtn');
+        const directorySection = document.getElementById('directorySection');
+        const contestantsSection = document.getElementById('contestantsSection');
+        const totalAlumniBadge = document.getElementById('totalAlumniBadge');
+        const yearTabsContainer = document.getElementById('yearTabsContainer');
+        const activeSetSummary = document.getElementById('activeSetSummary');
+        const searchInput = document.getElementById('searchInput');
+        const departmentFilter = document.getElementById('departmentFilter');
+        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+        const alumniGrid = document.getElementById('alumniGrid');
+        const emptyState = document.getElementById('emptyState');
+        const contestantsContainer = document.getElementById('contestantsContainer');
+        const sheetSyncStatusText = document.getElementById('sheetSyncStatusText');
+
+        // =========================================================================
+        // 3. DATA NORMALIZATION & CSV PARSER FOR LOCAL CSV
+        // =========================================================================
+        function getInitials(name) {
+            if (!name) return 'VU';
+            const cleaned = name.replace(/^(Dr\.|Mr\.|Mrs\.|Miss|Prof\.)\s+/i, '').trim();
+            const parts = cleaned.split(/[\s,]+/).filter(Boolean);
+            if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+        }
+
+        function normalizeCourse(rawCourse) {
+            const c = (rawCourse || '').trim();
+            if (!c) return 'General Studies';
+            const lower = c.toLowerCase();
+            if (lower.includes('political')) return 'Political Science and Diplomacy';
+            if (lower.includes('history')) return 'History and International Relations';
+            if (lower.includes('english') || lower.includes('emglish')) return 'English and Literary Studies';
+            if (lower.includes('computer science and information')) return 'Computer Science and Information Technology';
+            if (lower === 'csc' || lower.includes('computer science')) return 'Computer Science';
+            if (lower.includes('applied mcb') || lower.includes('applied microbiology')) return 'Applied Microbiology';
+            if (lower.includes('microbiology')) return 'Microbiology';
+            if (lower.includes('biochemistry')) return 'Biochemistry';
+            if (lower.includes('chemistry education')) return 'Chemistry Education';
+            if (lower.includes('industrial chemistry')) return 'Industrial Chemistry';
+            if (lower.includes('accounting')) return 'Accounting';
+            if (lower.includes('business administration')) return 'Business Administration';
+            if (lower.includes('public administration')) return 'Public Administration';
+            if (lower.includes('economics')) return 'Economics';
+            if (lower.includes('mass communication')) return 'Mass Communication';
+            if (lower.includes('educational management')) return 'Educational Management';
+            if (lower.includes('entrepreneurship')) return 'Entrepreneurship';
+            if (lower.includes('philosophy')) return 'Philosophy';
+            if (lower.includes('physics with electronics')) return 'Physics with Electronics';
+            if (lower.startsWith('physic')) return 'Physics';
+            if (lower.includes('electrical')) return 'Electrical/Electronic Engineering';
+            if (lower === 'gce') return 'Guidance and Counselling Education (GCE)';
+            return c.replace(/\b\w/g, (ch) => ch.toUpperCase());
+        }
+
+        function normalizeYear(rawYear) {
+            const y = (rawYear || '').trim();
+            if (y === '202p') return '2020';
+            const match = y.match(/\b(20\d{2})\b/);
+            return match ? match[1] : (y || 'Unknown');
+        }
+
+        function normalizeCountry(rawCountry) {
+            const c = (rawCountry || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim();
+            if (!c) return 'Not Specified';
+            const lower = c.toLowerCase();
+            if (lower === 'nigeria' || lower === 'nigerian') return 'Nigeria';
+            if (lower === 'abuja' || lower.includes('abuja')) return 'Nigeria (Abuja)';
+            if (lower === 'fct') return 'Nigeria (FCT)';
+            if (lower === 'england' || lower === 'uk' || lower === 'united kingdom') return 'United Kingdom';
+            if (lower === 'usa' || lower === 'united states') return 'United States';
+            return c.replace(/\b\w/g, (ch) => ch.toUpperCase());
+        }
+
+        function parseCSV(text) {
+            const rows = [];
+            let currentRow = [];
+            let currentCell = '';
+            let insideQuotes = false;
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const nextChar = text[i + 1];
+
+                if (char === '"') {
+                    if (insideQuotes && nextChar === '"') {
+                        currentCell += '"';
+                        i++;
+                    } else {
+                        insideQuotes = !insideQuotes;
+                    }
+                } else if (char === ',' && !insideQuotes) {
+                    currentRow.push(currentCell.trim());
+                    currentCell = '';
+                } else if ((char === '\n' || (char === '\r' && nextChar === '\n')) && !insideQuotes) {
+                    if (char === '\r') i++;
+                    currentRow.push(currentCell.trim());
+                    if (currentRow.some((cell) => cell !== '')) {
+                        rows.push(currentRow);
+                    }
+                    currentRow = [];
+                    currentCell = '';
+                } else {
+                    currentCell += char;
+                }
+            }
+
+            if (currentCell !== '' || currentRow.length > 0) {
+                currentRow.push(currentCell.trim());
+                if (currentRow.some((cell) => cell !== '')) {
+                    rows.push(currentRow);
+                }
+            }
+
+            return rows;
+        }
+
+        function transformSheetRows(rows) {
+            if (!rows || rows.length < 2) return [];
+            const headers = rows[0].map((h) => h.toUpperCase());
+
+            const idxTimestamp = headers.findIndex((h) => h.includes('TIMESTAMP'));
+            const idxEmail = headers.findIndex((h) => h.includes('EMAIL'));
+            const idxPhone = headers.findIndex((h) => h.includes('PHONE'));
+            const idxName = headers.findIndex((h) => h.includes('FULL NAME') || h === 'NAME');
+            const idxMatric = headers.findIndex((h) => h.includes('MATRIC'));
+            const idxCourse = headers.findIndex((h) => h.includes('COURSE') || h.includes('DEPARTMENT'));
+            const idxYear = headers.findIndex((h) => h.includes('YEAR') || h.includes('GRADUATION'));
+            const idxPassport = headers.findIndex((h) => h.includes('PASSPORT') || h.includes('PHOTO'));
+            const idxCountry = headers.findIndex((h) => h.includes('COUNTRY'));
+
+            const dedupMap = new Map();
+
+            for (let i = 1; i < rows.length; i++) {
+                const r = rows[i];
+                const rawName = (r[idxName >= 0 ? idxName : 3] || '').trim();
+                if (!rawName) continue;
+
+                const cleanName = rawName.replace(/Igoch3/gi, 'Igoche');
+                const email = (r[idxEmail >= 0 ? idxEmail : 1] || '').trim();
+                const matric = (r[idxMatric >= 0 ? idxMatric : 4] || '').trim().toUpperCase();
+                const dedupKey = (email || matric || cleanName).toLowerCase();
+
+                const record = {
+                    timestamp: (r[idxTimestamp >= 0 ? idxTimestamp : 0] || '').trim(),
+                    email: email || 'Not Provided',
+                    phone: (r[idxPhone >= 0 ? idxPhone : 2] || '').trim() || 'Not Provided',
+                    name: cleanName,
+                    matric: matric || 'N/A',
+                    course: normalizeCourse(r[idxCourse >= 0 ? idxCourse : 5]),
+                    year: normalizeYear(r[idxYear >= 0 ? idxYear : 6]),
+                    passport: (r[idxPassport >= 0 ? idxPassport : 7] || '').trim(),
+                    country: normalizeCountry(r[idxCountry >= 0 ? idxCountry : 8]),
+                };
+
+                // Keep the latest submission if duplicate email/matric exists
+                dedupMap.set(dedupKey, record);
+            }
+
+            return Array.from(dedupMap.values());
+        }
+
+        async function loadLocalAlumni() {
+            sheetSyncStatusText.textContent = 'Loading local alumni.csv...';
+
+            try {
+                const response = await fetch(LOCAL_CSV_URL, { cache: 'no-store' });
+                if (response.ok) {
+                    const csvText = await response.text();
+                    const records = transformSheetRows(parseCSV(csvText));
+                    if (records.length > 0) {
+                        ALUMNI_DATA = records;
+                        const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        sheetSyncStatusText.textContent =
+                            `Loaded ${ALUMNI_DATA.length} registered alumni for voting eligibility from local alumni.csv (${timeStr}).`;
+                        refreshAllViews();
+                        return;
+                    }
+                }
+            } catch (err) {}
+
+            ALUMNI_DATA = [...FALLBACK_ALUMNI_DATA];
+            sheetSyncStatusText.textContent = `Showing ${ALUMNI_DATA.length} cached registered alumni for voting eligibility (add alumni.csv to this folder for updates).`;
+            refreshAllViews();
+        }
+
+        // =========================================================================
+        // 4. LOCAL PASSPORT MANAGER
+        // =========================================================================
+        function normalizeNameKey(name) {
+            return (name || '')
+                .toLowerCase()
+                .replace(/\(.*?\)|\[.*?\]/g, ' ')
+                .replace(/[^a-z0-9 ]+/g, ' ')
+                .replace(/^(dr|mr|mrs|miss|prof)\s+/, '')
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean)
+                .sort()
+                .join(' ');
+        }
+
+        function findLocalPassport(alumnus) {
+            if (typeof LOCAL_PASSPORTS === 'undefined' || !alumnus) return null;
+            const email = (alumnus.email || '').trim().toLowerCase();
+            if (LOCAL_PASSPORTS.byEmail[email]) return LOCAL_PASSPORTS.byEmail[email];
+
+            const matric = (alumnus.matric || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            if (matric.length >= 5 && LOCAL_PASSPORTS.byMatric[matric]) return LOCAL_PASSPORTS.byMatric[matric];
+
+            const nameKey = normalizeNameKey(alumnus.name);
+            return LOCAL_PASSPORTS.byName[nameKey] || null;
+        }
+
+        function handlePassportImgError(imgEl) {
+            imgEl.classList.add('hidden');
+            const fallbackEl = imgEl.nextElementSibling;
+            if (fallbackEl) {
+                fallbackEl.classList.remove('hidden');
+                fallbackEl.classList.add('flex');
+            }
+        }
+
+        function buildPassportHtml(alumnus, sizeClasses = 'w-16 h-16 rounded-2xl text-lg') {
+            const localSrc = findLocalPassport(alumnus);
+            const initials = getInitials(alumnus.name);
+
+            if (!localSrc) {
+                return `
+          <div class="${sizeClasses} bg-gradient-to-br from-emerald-800 to-teal-700 text-amber-300 font-bold flex items-center justify-center shrink-0 shadow-inner select-none">
+            ${initials}
+          </div>
+        `;
+            }
+
+            return `
+        <div class="${sizeClasses} relative overflow-hidden bg-emerald-50 border border-emerald-200/80 shrink-0 shadow-xs">
+          <img
+            src="${localSrc}"
+            alt="${alumnus.name.replace(/"/g, '&quot;')}"
+            data-zoom-src="${localSrc}"
+            data-zoom-name="${alumnus.name.replace(/"/g, '&quot;')}"
+            data-zoom-initials="${initials}"
+            loading="lazy"
+            onerror="handlePassportImgError(this)"
+            class="passport-zoom-trigger w-full h-full object-cover cursor-zoom-in"
+            title="Click to enlarge"
+          />
+          <div class="hidden w-full h-full bg-gradient-to-br from-emerald-800 to-teal-700 text-amber-300 font-bold items-center justify-center select-none">
+            ${initials}
+          </div>
+        </div>
+      `;
+        }
+
+        // =========================================================================
+        // 5. RENDERING: GRADUATION YEAR TABS, FILTERS & ALUMNI CARDS
+        // =========================================================================
+        function renderYearTabs() {
+            const yearCounts = {};
+            ALUMNI_DATA.forEach((person) => {
+                yearCounts[person.year] = (yearCounts[person.year] || 0) + 1;
+            });
+
+            const sortedYears = Object.keys(yearCounts).sort((a, b) => a.localeCompare(b));
+            totalAlumniBadge.textContent = ALUMNI_DATA.length;
+
+            let html = `
+        <button
+          type="button"
+          data-year="ALL"
+          class="year-tab-btn shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 ${selectedYear === 'ALL'
+                    ? 'bg-emerald-800 text-white shadow-sm'
+                    : 'bg-slate-100 hover:bg-slate-200/80 text-slate-700'
+                }"
+        >
+          <span>All Sets</span>
+          <span class="px-2 py-0.5 rounded-full text-[11px] ${selectedYear === 'ALL' ? 'bg-amber-400 text-emerald-950 font-bold' : 'bg-white text-slate-600'
+                }">${ALUMNI_DATA.length}</span>
+        </button>
+      `;
+
+            sortedYears.forEach((yr) => {
+                const isActive = selectedYear === yr;
+                html += `
+          <button
+            type="button"
+            data-year="${yr}"
+            class="year-tab-btn shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 ${isActive
+                        ? 'bg-emerald-800 text-white shadow-sm'
+                        : 'bg-slate-100 hover:bg-slate-200/80 text-slate-700'
+                    }"
+          >
+            <span>Set of ${yr}</span>
+            <span class="px-2 py-0.5 rounded-full text-[11px] ${isActive ? 'bg-amber-400 text-emerald-950 font-bold' : 'bg-white text-slate-600'
+                    }">${yearCounts[yr]}</span>
+          </button>
+        `;
+            });
+
+            yearTabsContainer.innerHTML = html;
+
+            document.querySelectorAll('.year-tab-btn').forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    selectedYear = btn.dataset.year;
+                    renderYearTabs();
+                    renderAlumniCards();
+                });
+            });
+        }
+
+        function populateDepartmentDropdown() {
+            const courses = Array.from(new Set(ALUMNI_DATA.map((p) => p.course))).sort((a, b) =>
+                a.localeCompare(b)
+            );
+            const currentVal = selectedDepartment;
+
+            departmentFilter.innerHTML =
+                `<option value="ALL">All Departments / Courses (${courses.length})</option>` +
+                courses.map((c) => `<option value="${c}">${c}</option>`).join('');
+
+            if (courses.includes(currentVal)) {
+                departmentFilter.value = currentVal;
+            } else {
+                selectedDepartment = 'ALL';
+                departmentFilter.value = 'ALL';
+            }
+        }
+
+        function renderAlumniCards() {
+            const q = searchQuery.toLowerCase().trim();
+
+            const filtered = ALUMNI_DATA.filter((person) => {
+                const matchesYear = selectedYear === 'ALL' || person.year === selectedYear;
+                const matchesDept = selectedDepartment === 'ALL' || person.course === selectedDepartment;
+                const matchesQuery =
+                    !q ||
+                    person.name.toLowerCase().includes(q) ||
+                    person.matric.toLowerCase().includes(q) ||
+                    person.course.toLowerCase().includes(q);
+                return matchesYear && matchesDept && matchesQuery;
+            });
+
+            const setLabel = selectedYear === 'ALL' ? 'All Graduation Sets' : `Set of ${selectedYear}`;
+            activeSetSummary.textContent = `${setLabel} • ${filtered.length} ${filtered.length === 1 ? 'Graduate' : 'Graduates'
+                }`;
+
+            if (filtered.length === 0) {
+                alumniGrid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            alumniGrid.innerHTML = filtered
+                .map((person, index) => {
+                    const originalIdx = ALUMNI_DATA.indexOf(person);
+                    const localPhoto = findLocalPassport(person);
+                    return `
+            <article class="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-lg hover:border-emerald-300 transition-all p-3.5 sm:p-4 flex flex-col justify-between group">
+              <div>
+                <div class="relative flex justify-center mb-3">
+                  ${buildPassportHtml(person, 'w-36 h-36 sm:w-40 sm:h-40 rounded-2xl text-3xl ring-1 ring-emerald-100 group-hover:ring-emerald-400 transition')}
+                  <span class="absolute top-0 right-0 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/70 shadow-sm">
+                    Set of ${person.year}
+                  </span>
+                </div>
+
+                <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-emerald-800 transition-colors leading-snug text-center">
+                  ${person.name}
+                </h3>
+
+                <p class="text-[11px] sm:text-xs font-medium text-slate-600 mt-1 line-clamp-2 text-center">
+                  ${person.course}
+                </p>
+
+                <div class="mt-2 pt-2 border-t border-slate-100 text-xs">
+                  <div class="flex items-center justify-center gap-2">
+                    <span class="min-w-0 font-mono font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md truncate">${person.matric}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-3 pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                <button
+                  type="button"
+                  onclick="openProfileModal(${originalIdx})"
+                  class="text-xs font-semibold text-emerald-700 hover:text-emerald-900 inline-flex items-center gap-1"
+                >
+                  <span>View Details</span>
+                  <span>→</span>
+                </button>
+                ${localPhoto
+                            ? `<button
+                        type="button"
+                        onclick="openImageViewer('${localPhoto}', '${person.name.replace(/'/g, "\\'")}', '${getInitials(person.name)}')"
+                        class="text-[11px] font-medium text-slate-500 hover:text-amber-700 inline-flex items-center gap-1 bg-slate-50 hover:bg-amber-50 px-2.5 py-1 rounded-lg border border-slate-200/80 transition-colors"
+                        title="View local passport photo"
+                      >
+                        <span>View Photo</span>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                        </svg>
+                      </button>`
+                            : ''
+                        }
+              </div>
+            </article>
+          `;
+                })
+                .join('');
+        }
+
+        // =========================================================================
+        // 6. RENDERING: ELECTION CONTESTANTS PAGE
+        // =========================================================================
+        function findMatchingAlumnus(searchTerms) {
+            return ALUMNI_DATA.find((person) => {
+                const normalizedPersonName = person.name.toLowerCase();
+                return searchTerms.some((term) => normalizedPersonName.includes(term.toLowerCase()));
+            });
+        }
+
+        function renderContestantsPage() {
+            contestantsContainer.innerHTML = ELECTION_OFFICES.map((office) => {
+                const cardsHtml = office.candidates
+                    .map((candidate) => {
+                        const matchedAlumnus = findMatchingAlumnus(candidate.searchTerms);
+                        const displayProfile = matchedAlumnus || {
+                            name: candidate.name,
+                            course: 'Veritas University Alumni Aspirant',
+                            matric: 'Registry Verification Pending',
+                            year: 'Alumni',
+                            country: 'Nigeria',
+                            passport: '',
+                            email: 'Not Listed in Sheet',
+                            phone: 'Not Listed in Sheet',
+                        };
+
+                        const originalIdx = matchedAlumnus ? ALUMNI_DATA.indexOf(matchedAlumnus) : -1;
+                        const localPhoto = findLocalPassport(displayProfile);
+
+                        return `
+              <div class="bg-slate-50/80 rounded-2xl border border-slate-200/90 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-emerald-300 hover:bg-white transition-all group">
+                <div class="flex items-center gap-4">
+                  <div class="relative">
+                    ${buildPassportHtml(displayProfile, 'w-28 h-28 sm:w-32 sm:h-32 rounded-2xl text-2xl ring-1 ring-emerald-100 group-hover:ring-emerald-400 transition')}
+                    <span class="absolute -top-2 -left-2 w-7 h-7 rounded-full bg-amber-500 text-emerald-950 font-extrabold text-xs flex items-center justify-center shadow-sm border-2 border-white">
+                      #${candidate.ballotNumber}
+                    </span>
+                  </div>
+
+                  <div class="min-w-0 space-y-1">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <h4 class="break-words text-base sm:text-lg font-bold text-slate-900">${displayProfile.name}</h4>
+                      ${matchedAlumnus
+                                ? `<span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Set of ${matchedAlumnus.year}</span>`
+                                : `<span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Ballot Aspirant</span>`
+                            }
+                    </div>
+                    <p class="text-xs sm:text-sm font-medium text-slate-600">${displayProfile.course}</p>
+                    <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
+                      <span class="font-mono font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-lg">
+                        ${displayProfile.matric}
+                      </span>
+                      <span class="text-slate-500">&bull; ${displayProfile.country}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex sm:flex-col items-center sm:items-end gap-2 w-full sm:w-auto justify-end border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-200/70">
+                  ${matchedAlumnus
+                                ? `<button
+                          type="button"
+                          onclick="openProfileModal(${originalIdx}, '${office.title.replace(/'/g, "\\'")}')"
+                          class="px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-semibold transition-all"
+                        >
+                          Full Bio &amp; Photo
+                        </button>`
+                                : `<span class="text-xs text-slate-400 italic">Awaiting form upload</span>`
+                            }
+                  ${localPhoto
+                                ? `<button
+                          type="button"
+                          onclick="openImageViewer('${localPhoto}', '${displayProfile.name.replace(/'/g, "\\'")}', '${getInitials(displayProfile.name)}')"
+                          class="text-xs font-medium text-emerald-700 hover:underline"
+                        >
+                          View Photo ↗
+                        </button>`
+                                : ''
+                            }
+                </div>
+              </div>
+            `;
+                    })
+                    .join('');
+
+                return `
+          <section class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+            <div class="bg-slate-900 text-white px-6 py-4 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                <h3 class="text-base sm:text-lg font-bold tracking-tight">${office.title}</h3>
+              </div>
+              <span class="text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-white/10 text-amber-300">
+                ${office.candidates.length} ${office.candidates.length === 1 ? 'Candidate' : 'Candidates'}
+              </span>
+            </div>
+            <div class="p-5 grid grid-cols-1 lg:grid-cols-2 gap-4">
+              ${cardsHtml}
+            </div>
+          </section>
+        `;
+            }).join('');
+        }
+
+        // =========================================================================
+        // 7. MODALS & NAVIGATION HANDLERS
+        // =========================================================================
+        const profileModal = document.getElementById('profileModal');
+        const modalSetBadge = document.getElementById('modalSetBadge');
+        const modalFullName = document.getElementById('modalFullName');
+        const modalAvatarBox = document.getElementById('modalAvatarBox');
+        const modalContestantBadge = document.getElementById('modalContestantBadge');
+        const modalCourse = document.getElementById('modalCourse');
+        const modalMatric = document.getElementById('modalMatric');
+        const modalYear = document.getElementById('modalYear');
+        const modalEmail = document.getElementById('modalEmail');
+        const modalPhone = document.getElementById('modalPhone');
+        const modalPassportLink = document.getElementById('modalPassportLink');
+
+        window.openProfileModal = function (index, officeTitle = '') {
+            const person = ALUMNI_DATA[index];
+            if (!person) return;
+
+            modalSetBadge.textContent = `Graduation Set of ${person.year}`;
+            modalFullName.textContent = person.name;
+            modalAvatarBox.innerHTML = buildPassportHtml(person, 'w-full h-full text-2xl');
+            modalCourse.textContent = person.course;
+            modalMatric.textContent = person.matric;
+            modalYear.textContent = person.year;
+            modalEmail.textContent = person.email;
+            modalPhone.textContent = person.phone;
+
+            if (officeTitle) {
+                modalContestantBadge.textContent = `Aspirant: ${officeTitle}`;
+                modalContestantBadge.classList.remove('hidden');
+            } else {
+                modalContestantBadge.classList.add('hidden');
+            }
+
+            const localPassport = findLocalPassport(person);
+            if (localPassport) {
+                modalPassportLink.href = localPassport;
+                modalPassportLink.classList.remove('hidden');
+            } else {
+                modalPassportLink.classList.add('hidden');
+            }
+
+            profileModal.classList.remove('hidden');
+            profileModal.classList.add('flex');
+        };
+
+        function closeProfileModal() {
+            profileModal.classList.add('hidden');
+            profileModal.classList.remove('flex');
+        }
+
+        document.getElementById('closeProfileModalBtn').addEventListener('click', closeProfileModal);
+        document.getElementById('modalDoneBtn').addEventListener('click', closeProfileModal);
+        profileModal.addEventListener('click', (e) => {
+            if (e.target === profileModal) closeProfileModal();
+        });
+
+        const imageViewer = document.getElementById('imageViewerModal');
+        const zoomStage = document.getElementById('zoomStage');
+        const zoomImage = document.getElementById('zoomImage');
+        const zoomInitials = document.getElementById('zoomInitials');
+        const zoomTitle = document.getElementById('zoomTitle');
+        const zoomLevel = document.getElementById('zoomLevel');
+        const zoomFileLink = document.getElementById('zoomFileLink');
+        const zoomResetBtn = document.getElementById('zoomResetBtn');
+        const zoomState = { scale: 1, fitScale: 1, tx: 0, ty: 0 };
+        let isPanning = false;
+        let panStartX = 0;
+        let panStartY = 0;
+
+        function applyZoomTransform() {
+            zoomImage.style.transform =
+                `translate(-50%, -50%) translate(${zoomState.tx}px, ${zoomState.ty}px) scale(${zoomState.scale})`;
+            zoomLevel.textContent = `${Math.round((zoomState.scale / zoomState.fitScale) * 100)}%`;
+        }
+
+        function fitZoomImage() {
+            if (!zoomImage.naturalWidth || !zoomStage.clientWidth) return;
+            zoomImage.style.width = `${zoomImage.naturalWidth}px`;
+            zoomImage.style.height = `${zoomImage.naturalHeight}px`;
+            const availableW = Math.max(120, zoomStage.clientWidth - 48);
+            const availableH = Math.max(120, zoomStage.clientHeight - 48);
+            zoomState.fitScale = Math.min(
+                availableW / zoomImage.naturalWidth,
+                availableH / zoomImage.naturalHeight,
+                2.5
+            );
+            zoomState.scale = zoomState.fitScale;
+            zoomState.tx = 0;
+            zoomState.ty = 0;
+            applyZoomTransform();
+        }
+
+        function zoomBy(factor, clientX, clientY) {
+            const currentRatio = zoomState.scale / zoomState.fitScale;
+            const nextRatio = Math.min(8, Math.max(0.8, currentRatio * factor));
+            const nextScale = nextRatio * zoomState.fitScale;
+            const rect = zoomStage.getBoundingClientRect();
+            const px = clientX == null ? 0 : clientX - rect.left - rect.width / 2;
+            const py = clientY == null ? 0 : clientY - rect.top - rect.height / 2;
+            const ix = (px - zoomState.tx) / zoomState.scale;
+            const iy = (py - zoomState.ty) / zoomState.scale;
+            zoomState.scale = nextScale;
+            zoomState.tx = px - ix * nextScale;
+            zoomState.ty = py - iy * nextScale;
+            applyZoomTransform();
+        }
+
+        function resetZoom() {
+            zoomState.scale = zoomState.fitScale;
+            zoomState.tx = 0;
+            zoomState.ty = 0;
+            applyZoomTransform();
+        }
+
+        function handleZoomImgError() {
+            zoomImage.classList.add('hidden');
+            zoomInitials.textContent = zoomInitials.dataset.value || '';
+            zoomInitials.classList.remove('hidden');
+            zoomInitials.classList.add('flex');
+            zoomLevel.textContent = '—';
+        }
+
+        window.openImageViewer = function (src, name, initials) {
+            zoomTitle.textContent = name || 'Passport photograph';
+            zoomInitials.dataset.value = initials || '';
+            zoomInitials.textContent = initials || '';
+            zoomInitials.classList.add('hidden');
+            zoomInitials.classList.remove('flex');
+            zoomImage.classList.remove('hidden');
+            zoomImage.onload = fitZoomImage;
+            zoomImage.onerror = handleZoomImgError;
+            zoomImage.src = src || '';
+
+            if (src) {
+                zoomFileLink.href = src;
+                zoomFileLink.classList.remove('hidden');
+            } else {
+                zoomFileLink.classList.add('hidden');
+                zoomImage.classList.add('hidden');
+                zoomInitials.classList.remove('hidden');
+                zoomInitials.classList.add('flex');
+            }
+
+            imageViewer.classList.remove('hidden');
+            imageViewer.classList.add('flex');
+            requestAnimationFrame(fitZoomImage);
+        };
+
+        function closeImageViewer() {
+            imageViewer.classList.add('hidden');
+            imageViewer.classList.remove('flex');
+            zoomImage.onload = null;
+            zoomImage.onerror = null;
+            isPanning = false;
+        }
+
+        document.getElementById('closeImageViewerBtn').addEventListener('click', closeImageViewer);
+        imageViewer.addEventListener('click', (e) => {
+            if (e.target === imageViewer) closeImageViewer();
+        });
+        document.getElementById('zoomInBtn').addEventListener('click', () => zoomBy(1.25));
+        document.getElementById('zoomOutBtn').addEventListener('click', () => zoomBy(0.8));
+        zoomResetBtn.addEventListener('click', resetZoom);
+
+        zoomStage.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            zoomBy(e.deltaY < 0 ? 1.15 : 1 / 1.15, e.clientX, e.clientY);
+        }, { passive: false });
+
+        zoomStage.addEventListener('dblclick', (e) => zoomBy(1.6, e.clientX, e.clientY));
+
+        zoomStage.addEventListener('pointerdown', (e) => {
+            if (e.button !== 0) return;
+            isPanning = true;
+            panStartX = e.clientX - zoomState.tx;
+            panStartY = e.clientY - zoomState.ty;
+            try { zoomStage.setPointerCapture(e.pointerId); } catch (err) {}
+            zoomStage.classList.remove('cursor-grab');
+            zoomStage.classList.add('cursor-grabbing');
+        });
+
+        zoomStage.addEventListener('pointermove', (e) => {
+            if (!isPanning) return;
+            zoomState.tx = e.clientX - panStartX;
+            zoomState.ty = e.clientY - panStartY;
+            applyZoomTransform();
+        });
+
+        const endPan = (e) => {
+            isPanning = false;
+            try { if (zoomStage.hasPointerCapture(e.pointerId)) zoomStage.releasePointerCapture(e.pointerId); } catch (err) {}
+            zoomStage.classList.add('cursor-grab');
+            zoomStage.classList.remove('cursor-grabbing');
+        };
+        zoomStage.addEventListener('pointerup', endPan);
+        zoomStage.addEventListener('pointercancel', endPan);
+
+        document.addEventListener('click', (e) => {
+            const trigger = e.target.closest('.passport-zoom-trigger');
+            if (!trigger) return;
+            e.preventDefault();
+            e.stopPropagation();
+            openImageViewer(
+                trigger.dataset.zoomSrc,
+                trigger.dataset.zoomName,
+                trigger.dataset.zoomInitials
+            );
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!imageViewer.classList.contains('hidden')) {
+                if (e.key === 'Escape') closeImageViewer();
+                else if (e.key === '+' || e.key === '=') zoomBy(1.25);
+                else if (e.key === '-') zoomBy(0.8);
+                else if (e.key === '0') resetZoom();
+                return;
+            }
+            if (e.key === 'Escape' && !profileModal.classList.contains('hidden')) closeProfileModal();
+        });
+
+        // Prompt Modal Logic
+        const promptModal = document.getElementById('promptModal');
+        const promptTextarea = document.getElementById('promptTextarea');
+        const copySuccessMsg = document.getElementById('copySuccessMsg');
+        promptTextarea.value = PROMPT_TEMPLATE;
+
+        function openPromptModal() {
+            promptModal.classList.remove('hidden');
+            promptModal.classList.add('flex');
+        }
+
+        function closePromptModal() {
+            promptModal.classList.add('hidden');
+            promptModal.classList.remove('flex');
+            copySuccessMsg.classList.add('opacity-0');
+        }
+
+        const openPromptModalBtn = document.getElementById('openPromptModalBtn');
+        const footerPromptBtn = document.getElementById('footerPromptBtn');
+        if (openPromptModalBtn) openPromptModalBtn.addEventListener('click', openPromptModal);
+        if (footerPromptBtn) footerPromptBtn.addEventListener('click', openPromptModal);
+        document.getElementById('closePromptModalBtn').addEventListener('click', closePromptModal);
+        document.getElementById('closePromptBottomBtn').addEventListener('click', closePromptModal);
+        promptModal.addEventListener('click', (e) => {
+            if (e.target === promptModal) closePromptModal();
+        });
+
+        document.getElementById('copyPromptBtn').addEventListener('click', () => {
+            promptTextarea.select();
+            document.execCommand('copy');
+            copySuccessMsg.classList.remove('opacity-0');
+            setTimeout(() => copySuccessMsg.classList.add('opacity-0'), 2500);
+        });
+
+        // View Switching (Alumni Sets vs Election Contestants)
+        navDirectoryBtn.addEventListener('click', () => {
+            directorySection.classList.remove('hidden');
+            contestantsSection.classList.add('hidden');
+            navDirectoryBtn.className = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-amber-500 text-emerald-950 shadow-sm';
+            navContestantsBtn.className = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all text-emerald-100 hover:text-white flex items-center gap-1.5';
+        });
+
+        navContestantsBtn.addEventListener('click', () => {
+            contestantsSection.classList.remove('hidden');
+            directorySection.classList.add('hidden');
+            navContestantsBtn.className = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-amber-500 text-emerald-950 shadow-sm flex items-center gap-1.5';
+            navDirectoryBtn.className = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all text-emerald-100 hover:text-white';
+        });
+
+        // Filter Events
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderAlumniCards();
+        });
+
+        departmentFilter.addEventListener('change', (e) => {
+            selectedDepartment = e.target.value;
+            renderAlumniCards();
+        });
+
+        resetFiltersBtn.addEventListener('click', () => {
+            selectedYear = 'ALL';
+            selectedDepartment = 'ALL';
+            searchQuery = '';
+            searchInput.value = '';
+            departmentFilter.value = 'ALL';
+            renderYearTabs();
+            renderAlumniCards();
+        });
+
+        document.getElementById('dismissNoticeBtn').addEventListener('click', () => {
+            document.getElementById('driveNoticeBanner').classList.add('hidden');
+        });
+
+        function refreshAllViews() {
+            renderYearTabs();
+            populateDepartmentDropdown();
+            renderAlumniCards();
+            renderContestantsPage();
+        }
+
+        // Initialize Application
+        refreshAllViews();
+        loadLocalAlumni();
+    </script>
+</body>
+
+</html>
