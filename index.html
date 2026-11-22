@@ -368,10 +368,6 @@
                         <span id="modalYear" class="font-semibold text-slate-800">2019</span>
                     </div>
                     <div>
-                        <span class="text-xs text-slate-400 block">Email Address</span>
-                        <span id="modalEmail" class="font-medium text-slate-700 break-all">email@example.com</span>
-                    </div>
-                    <div>
                         <span class="text-xs text-slate-400 block">Phone Number</span>
                         <span id="modalPhone" class="font-medium text-slate-700">08000000000</span>
                     </div>
@@ -1134,7 +1130,6 @@ Requirements:
         const modalCourse = document.getElementById('modalCourse');
         const modalMatric = document.getElementById('modalMatric');
         const modalYear = document.getElementById('modalYear');
-        const modalEmail = document.getElementById('modalEmail');
         const modalPhone = document.getElementById('modalPhone');
         const modalPassportLink = document.getElementById('modalPassportLink');
 
@@ -1148,7 +1143,6 @@ Requirements:
             modalCourse.textContent = person.course;
             modalMatric.textContent = person.matric;
             modalYear.textContent = person.year;
-            modalEmail.textContent = person.email;
             modalPhone.textContent = person.phone;
 
             if (officeTitle) {
